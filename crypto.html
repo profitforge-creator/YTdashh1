@@ -251,6 +251,79 @@ select.gm-input { flex: 0 0 auto; min-width: 110px; -webkit-appearance: none; ap
   font-size: 11px; color: var(--text-tertiary); font-style: italic;
 }
 
+/* ---------- Trading Rhythm (peak-curve style) ---------- */
+.rhythm-card {
+  position: relative;
+  background: radial-gradient(120% 140% at 15% -10%, rgba(107,227,164,0.10), transparent 55%), rgba(0,0,0,0.30);
+  border: 1px solid rgba(255,255,255,0.06);
+}
+.rhythm-top { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; margin-bottom: 18px; }
+.rhythm-ring-wrap { position: relative; width: 76px; height: 76px; flex-shrink: 0; }
+.rhythm-ring-wrap svg { width: 76px; height: 76px; transform: rotate(-90deg); }
+.rhythm-ring-track { fill: none; stroke: rgba(255,255,255,0.08); stroke-width: 6; }
+.rhythm-ring-fill { fill: none; stroke: #6BE3A4; stroke-width: 6; stroke-linecap: round; transition: stroke-dashoffset 0.25s ease, stroke 0.25s ease; }
+.rhythm-ring-label {
+  position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center;
+}
+.rhythm-ring-num { font-size: 22px; font-weight: 700; color: var(--text-primary); line-height: 1; font-variant-numeric: tabular-nums; }
+.rhythm-ring-sub { font-size: 8.5px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-tertiary); margin-top: 2px; }
+
+.rhythm-mid { flex: 1; min-width: 180px; }
+.rhythm-status { font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-tertiary); margin-bottom: 2px; }
+.rhythm-status-dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: #6BE3A4; margin-right: 6px; }
+.rhythm-title { font-size: 10.5px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--text-tertiary); }
+.rhythm-desc { font-size: 12px; color: var(--text-tertiary); margin-top: 3px; line-height: 1.5; max-width: 340px; }
+
+.seg-control { display: flex; gap: 2px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.07); border-radius: 10px; padding: 3px; flex-shrink: 0; }
+.seg-btn { border: 0; background: transparent; color: var(--text-tertiary); font-family: inherit; font-size: 10.5px; font-weight: 700; letter-spacing: 0.06em; padding: 6px 11px; border-radius: 7px; cursor: pointer; transition: background 0.15s, color 0.15s; }
+.seg-btn.active { background: rgba(255,255,255,0.10); color: var(--text-primary); }
+
+.rhythm-chart-wrap { position: relative; width: 100%; height: 170px; }
+.rhythm-chart-wrap canvas { display: block; width: 100%; height: 100%; cursor: crosshair; }
+.rhythm-band {
+  position: absolute; top: 0; bottom: 26px; border-radius: 4px; pointer-events: none;
+}
+.rhythm-band.active-band { background: rgba(107,227,164,0.07); }
+.rhythm-band.quiet-band { background: rgba(255,107,107,0.05); }
+.rhythm-tooltip {
+  position: absolute; top: 4px; transform: translateX(-50%);
+  background: rgba(10,10,11,0.92); border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 10px; padding: 6px 10px; text-align: center;
+  pointer-events: none; opacity: 0; transition: opacity 0.12s; white-space: nowrap;
+}
+.rhythm-tooltip.show { opacity: 1; }
+.rhythm-tooltip-num { font-size: 14px; font-weight: 700; color: #6BE3A4; }
+.rhythm-tooltip-time { font-size: 9.5px; color: var(--text-tertiary); margin-top: 1px; }
+.rhythm-axis { display: flex; justify-content: space-between; font-size: 9.5px; color: var(--text-tertiary); font-family: var(--font-mono); margin-top: 4px; }
+
+.rhythm-plan-bar {
+  margin-top: 14px; padding: 12px 14px; border-radius: 12px;
+  border: 1px dashed rgba(255,255,255,0.12); background: rgba(255,255,255,0.02);
+  display: flex; align-items: center; justify-content: center; gap: 18px; flex-wrap: wrap;
+  font-size: 11.5px; color: var(--text-tertiary); text-align: center;
+}
+.rhythm-plan-bar b { color: var(--text-primary); font-weight: 700; }
+.rhythm-plan-chip { display: inline-flex; align-items: center; gap: 6px; }
+
+/* ---------- Trade log ---------- */
+.trade-row { display: flex; align-items: center; gap: 10px; padding: 9px 0; }
+.trade-row + .trade-row { border-top: 1px solid rgba(255,255,255,0.045); }
+.trade-sym { font-size: 13px; font-weight: 700; color: var(--text-primary); }
+.trade-time { font-size: 10.5px; color: var(--text-tertiary); font-family: var(--font-mono); }
+.trade-note { font-size: 10.5px; color: var(--text-tertiary); margin-top: 2px; }
+.trade-info { flex: 1; min-width: 0; }
+.trade-pnl { font-size: 14px; font-weight: 700; font-variant-numeric: tabular-nums; flex-shrink: 0; }
+.trade-pnl.up { color: var(--success); }
+.trade-pnl.down { color: var(--danger); }
+.trade-delete {
+  border: 0; background: transparent; color: var(--text-tertiary);
+  font-size: 16px; cursor: pointer; padding: 0 2px 0 6px; flex-shrink: 0;
+  opacity: 0.55; transition: opacity 0.2s, color 0.2s;
+}
+.trade-delete:hover { opacity: 1; color: var(--danger); }
+.trade-summary { display: flex; gap: 16px; flex-wrap: wrap; margin-top: 4px; }
+.trade-summary .stat { flex: 1; min-width: 100px; }
+
 /* ---------- Wallets ---------- */
 .wallet-card { flex-direction: column; align-items: stretch; gap: 0; cursor: pointer; }
 .wallet-card-top { display: flex; align-items: center; gap: 12px; width: 100%; }
@@ -401,6 +474,75 @@ select.gm-input { flex: 0 0 auto; min-width: 110px; -webkit-appearance: none; ap
     </div>
   </div>
 
+  <!-- ===================== TRADING RHYTHM ===================== -->
+  <div class="section">
+    <div class="section-title">Trading Rhythm</div>
+    <div class="gm-card rhythm-card">
+      <div class="rhythm-top">
+        <div class="rhythm-ring-wrap">
+          <svg viewBox="0 0 76 76">
+            <circle class="rhythm-ring-track" cx="38" cy="38" r="32"></circle>
+            <circle class="rhythm-ring-fill" id="rhythmRingFill" cx="38" cy="38" r="32"
+                    stroke-dasharray="201" stroke-dashoffset="201"></circle>
+          </svg>
+          <div class="rhythm-ring-label">
+            <div class="rhythm-ring-num" id="rhythmRingNum">—</div>
+            <div class="rhythm-ring-sub" id="rhythmRingSub">trades</div>
+          </div>
+        </div>
+        <div class="rhythm-mid">
+          <div class="rhythm-status"><span class="rhythm-status-dot" id="rhythmStatusDot"></span><span id="rhythmStatusText">Peak</span> <span id="rhythmStatusTime"></span></div>
+          <div class="rhythm-title">Your Trading Curve</div>
+          <div class="rhythm-desc">When you're actually active in the market, hour by hour — built from every trade you log below. Hover the curve to scrub.</div>
+        </div>
+        <div class="seg-control" id="rhythmSegControl">
+          <button class="seg-btn active" type="button" data-mode="line">LINE</button>
+          <button class="seg-btn" type="button" data-mode="bars">BARS</button>
+          <button class="seg-btn" type="button" data-mode="stack">STACK</button>
+        </div>
+      </div>
+
+      <div class="rhythm-chart-wrap" id="rhythmChartWrap">
+        <div class="rhythm-band active-band" id="rhythmActiveBand" style="display:none;"></div>
+        <div class="rhythm-band quiet-band" id="rhythmQuietBand" style="display:none;"></div>
+        <canvas id="rhythmChart"></canvas>
+        <div class="rhythm-tooltip" id="rhythmTooltip">
+          <div class="rhythm-tooltip-num" id="rhythmTooltipNum">—</div>
+          <div class="rhythm-tooltip-time" id="rhythmTooltipTime">—</div>
+        </div>
+      </div>
+      <div class="rhythm-axis">
+        <span>12A</span><span>3A</span><span>6A</span><span>9A</span><span>12P</span><span>3P</span><span>6P</span><span>9P</span><span>12A</span>
+      </div>
+
+      <div class="rhythm-plan-bar" id="rhythmPlanBar">
+        Log at least 3 trades to see your most-active and quiet-stretch windows.
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== TRADE LOG ===================== -->
+  <div class="section">
+    <div class="section-title">Log a Trade (e.g. Axiom)</div>
+    <div class="gm-card">
+      <div class="trade-summary" style="margin-bottom:14px;">
+        <div class="stat"><div class="stat-num" id="tradeCount">0</div><div class="stat-label">Trades Logged</div></div>
+        <div class="stat"><div class="stat-num" id="tradeNetPnl">$0.00</div><div class="stat-label">Net P&amp;L</div></div>
+        <div class="stat"><div class="stat-num" id="tradeWinRate">—</div><div class="stat-label">Win Rate</div></div>
+      </div>
+
+      <div id="tradeList"></div>
+
+      <div class="gm-input-wrap">
+        <input class="gm-input" id="tradePosInput" type="text" placeholder="Position / ticker (e.g. $WIF)" autocomplete="off" style="flex: 1 1 140px;">
+        <input class="gm-input" id="tradePnlInput" type="number" step="any" placeholder="P&L in $ (-50 or 120)" style="flex: 1 1 130px;">
+        <input class="gm-input" id="tradeTimeInput" type="datetime-local" style="flex: 1 1 170px;">
+        <input class="gm-input" id="tradeNoteInput" type="text" placeholder="Note (optional)" autocomplete="off" style="flex: 1 1 140px;">
+        <button class="gm-add" id="tradeAddBtn" type="button">Log Trade</button>
+      </div>
+    </div>
+  </div>
+
   <!-- ===================== WALLETS ===================== -->
   <div class="section">
     <div class="section-title">Wallets</div>
@@ -502,6 +644,12 @@ select.gm-input { flex: 0 0 auto; min-width: 110px; -webkit-appearance: none; ap
     if (n === 0) return '$0.00';
     return '$' + n.toPrecision(3);
   }
+  // Signed currency for P&L — fmtUsd() alone mangles negative numbers
+  // (e.g. -1234 falls through to toPrecision and prints as "-1.23e+3").
+  function fmtPnl(n) {
+    if (n == null || isNaN(n)) return '—';
+    return (n > 0 ? '+' : n < 0 ? '-' : '') + fmtUsd(Math.abs(n));
+  }
   function fmtPct(n) {
     if (n == null || isNaN(n)) return '—';
     return (n >= 0 ? '+' : '') + n.toFixed(2) + '%';
@@ -558,10 +706,18 @@ select.gm-input { flex: 0 0 auto; min-width: 110px; -webkit-appearance: none; ap
     try { return JSON.parse(localStorage.getItem('crypto:settings')) || {}; } catch (e) { return {}; }
   }
   function saveSettings(s) { localStorage.setItem('crypto:settings', JSON.stringify(s)); }
+  function loadTrades() {
+    try { return JSON.parse(localStorage.getItem('crypto:trades')) || []; } catch (e) { return []; }
+  }
+  function saveTrades(list) {
+    if (list.length > 500) list = list.slice(list.length - 500);
+    localStorage.setItem('crypto:trades', JSON.stringify(list));
+  }
 
   let wallets = loadWallets();
   let history = loadHistory();
   let settings = loadSettings();
+  let trades = loadTrades();
   // holdingsByWallet[walletId] = { totalUsd, chgPct, tokens: [{symbol,name,logo,qty,price,chgPct,usd,id/mint}] }
   let holdingsByWallet = {};
 
@@ -762,6 +918,295 @@ select.gm-input { flex: 0 0 auto; min-width: 110px; -webkit-appearance: none; ap
     ctx.fillStyle = color;
     ctx.fill();
   }
+
+  // ============================================================
+  // TRADING RHYTHM — hour-of-day activity from logged trades
+  // ============================================================
+  function hourLabel(h, m) {
+    m = m || 0;
+    const ampm = h >= 12 ? 'PM' : 'AM';
+    let h12 = h % 12; if (h12 === 0) h12 = 12;
+    return m ? (h12 + ':' + String(m).padStart(2, '0') + ' ' + ampm) : (h12 + ' ' + ampm);
+  }
+
+  // Buckets every logged trade into its hour-of-day (0-23), across all
+  // history — with only a handful of manual logs, "today only" would be
+  // too sparse to mean anything, so this finds your overall rhythm.
+  function computeRhythm() {
+    const buckets = new Array(24).fill(0);
+    const minutesInHour = {};
+    trades.forEach((t) => {
+      const d = new Date(t.ts);
+      if (isNaN(d.getTime())) return;
+      const h = d.getHours();
+      buckets[h]++;
+      (minutesInHour[h] = minutesInHour[h] || []).push(d.getMinutes());
+    });
+
+    let peakHour = 0;
+    for (let h = 1; h < 24; h++) if (buckets[h] > buckets[peakHour]) peakHour = h;
+    const peakMinutes = minutesInHour[peakHour] || [];
+    const avgMin = peakMinutes.length ? Math.round(peakMinutes.reduce((s, m) => s + m, 0) / peakMinutes.length) : 0;
+
+    // Longest contiguous run of zero-trade hours (wraps past midnight).
+    let quietStart = -1, quietLen = 0, bestStart = -1, bestLen = 0;
+    for (let i = 0; i < 48; i++) {
+      const h = i % 24;
+      if (buckets[h] === 0) {
+        if (quietStart === -1) quietStart = h;
+        quietLen++;
+        if (quietLen > bestLen) { bestLen = quietLen; bestStart = quietStart; }
+      } else {
+        quietStart = -1; quietLen = 0;
+      }
+      if (bestLen >= 24) break; // fully quiet — no trades at all
+    }
+
+    return { buckets, peakHour, peakCount: buckets[peakHour], avgMin, quietStartHour: bestStart, quietLenHours: bestLen };
+  }
+
+  let rhythmMode = 'line';
+  let rhythmHoverIdx = null;
+
+  function renderRhythm() {
+    const r = computeRhythm();
+    const totalTrades = trades.length;
+    const maxBucket = Math.max.apply(null, r.buckets) || 1;
+
+    const planBar = $('rhythmPlanBar');
+    const activeBand = $('rhythmActiveBand');
+    const quietBand = $('rhythmQuietBand');
+    if (totalTrades < 3) {
+      planBar.textContent = 'Log at least 3 trades to see your most-active and quiet-stretch windows.';
+      activeBand.style.display = 'none';
+      quietBand.style.display = 'none';
+    } else {
+      const peakEndLabel = hourLabel((r.peakHour + 1) % 24);
+      planBar.innerHTML =
+        '<span class="rhythm-plan-chip">🟢 Most active: <b>' + hourLabel(r.peakHour) + ' – ' + peakEndLabel + '</b></span>' +
+        (r.quietLenHours > 0 && r.quietLenHours < 24
+          ? '<span class="rhythm-plan-chip">🌙 Quiet stretch: <b>' + hourLabel(r.quietStartHour) + ' – ' + hourLabel((r.quietStartHour + r.quietLenHours) % 24) + '</b></span>'
+          : '');
+      activeBand.style.display = 'block';
+      activeBand.style.left = (r.peakHour / 24 * 100) + '%';
+      activeBand.style.width = (1 / 24 * 100) + '%';
+      if (r.quietLenHours > 0 && r.quietLenHours < 24) {
+        quietBand.style.display = 'block';
+        quietBand.style.left = (r.quietStartHour / 24 * 100) + '%';
+        quietBand.style.width = (r.quietLenHours / 24 * 100) + '%';
+      } else {
+        quietBand.style.display = 'none';
+      }
+    }
+
+    updateRing(r.peakHour, r.peakCount, maxBucket, r.avgMin, 'Peak');
+    drawRhythmChart(r.buckets, maxBucket);
+  }
+
+  function updateRing(hour, value, maxBucket, minute, statusWord) {
+    const pct = maxBucket ? Math.max(0, Math.min(1, value / maxBucket)) : 0;
+    const circumference = 201; // 2 * PI * r(32), matches the SVG circle
+    $('rhythmRingFill').style.strokeDashoffset = String(circumference * (1 - pct));
+    $('rhythmRingNum').textContent = String(value);
+    $('rhythmRingSub').textContent = value === 1 ? 'trade' : 'trades';
+    $('rhythmStatusText').textContent = statusWord;
+    $('rhythmStatusTime').textContent = trades.length ? 'at ' + hourLabel(hour, minute) : '';
+  }
+
+  function drawRhythmChart(buckets, maxBucket) {
+    const canvas = $('rhythmChart');
+    const wrap = canvas.parentElement;
+    const rect = wrap.getBoundingClientRect();
+    const dpr = window.devicePixelRatio || 1;
+    const w = Math.max(1, Math.round(rect.width));
+    const h = Math.max(1, Math.round(rect.height));
+    canvas.width = w * dpr; canvas.height = h * dpr;
+    const ctx = canvas.getContext('2d');
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.clearRect(0, 0, w, h);
+
+    const pad = 4;
+    const n = buckets.length;
+    const stepX = (w - pad * 2) / (n - 1);
+    let series = buckets;
+    if (rhythmMode === 'stack') {
+      let running = 0;
+      series = buckets.map((v) => (running += v));
+    }
+    const max = Math.max.apply(null, series) || 1;
+    const toY = (v) => pad + (h - pad * 2 - 22) * (1 - v / max);
+
+    if (rhythmMode === 'bars') {
+      const barW = Math.max(2, stepX * 0.55);
+      ctx.fillStyle = '#6BE3A4';
+      series.forEach((v, i) => {
+        const x = pad + i * stepX - barW / 2;
+        const y = toY(v);
+        const bh = (h - pad - 22) - y;
+        if (bh <= 0) return;
+        ctx.globalAlpha = (rhythmHoverIdx === i) ? 1 : 0.75;
+        ctx.beginPath();
+        ctx.roundRect ? ctx.roundRect(x, y, barW, bh, 3) : ctx.rect(x, y, barW, bh);
+        ctx.fill();
+      });
+      ctx.globalAlpha = 1;
+    } else {
+      // LINE / STACK — smoothed glow curve with area fill
+      const pts = series.map((v, i) => [pad + i * stepX, toY(v)]);
+      const grad = ctx.createLinearGradient(0, 0, 0, h);
+      grad.addColorStop(0, '#6BE3A455');
+      grad.addColorStop(1, '#6BE3A400');
+
+      function curvePath() {
+        ctx.beginPath();
+        ctx.moveTo(pts[0][0], pts[0][1]);
+        for (let i = 0; i < pts.length - 1; i++) {
+          const p0 = pts[i], p1 = pts[i + 1];
+          const midX = (p0[0] + p1[0]) / 2;
+          ctx.quadraticCurveTo(p0[0], p0[1], midX, (p0[1] + p1[1]) / 2);
+        }
+        ctx.lineTo(pts[pts.length - 1][0], pts[pts.length - 1][1]);
+      }
+
+      curvePath();
+      ctx.lineTo(pts[pts.length - 1][0], h - pad - 22);
+      ctx.lineTo(pts[0][0], h - pad - 22);
+      ctx.closePath();
+      ctx.fillStyle = grad;
+      ctx.fill();
+
+      curvePath();
+      ctx.strokeStyle = '#6BE3A4';
+      ctx.lineWidth = 2.25;
+      ctx.lineJoin = 'round';
+      ctx.shadowColor = '#6BE3A4';
+      ctx.shadowBlur = 8;
+      ctx.stroke();
+      ctx.shadowBlur = 0;
+    }
+
+    // hover guide line + dot
+    if (rhythmHoverIdx != null) {
+      const x = pad + rhythmHoverIdx * stepX;
+      const y = toY(series[rhythmHoverIdx]);
+      ctx.beginPath();
+      ctx.moveTo(x, pad); ctx.lineTo(x, h - pad - 22);
+      ctx.strokeStyle = 'rgba(255,255,255,0.15)';
+      ctx.lineWidth = 1;
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.arc(x, y, 4, 0, Math.PI * 2);
+      ctx.fillStyle = '#FAFAFA';
+      ctx.fill();
+    }
+  }
+
+  function rhythmPointerMove(clientX) {
+    const canvas = $('rhythmChart');
+    const rect = canvas.getBoundingClientRect();
+    const x = clientX - rect.left;
+    const idx = Math.max(0, Math.min(23, Math.round((x / rect.width) * 23)));
+    rhythmHoverIdx = idx;
+    const r = computeRhythm();
+    const maxBucket = Math.max.apply(null, r.buckets) || 1;
+    let val = r.buckets[idx];
+    if (rhythmMode === 'stack') {
+      val = r.buckets.slice(0, idx + 1).reduce((s, v) => s + v, 0);
+    }
+    updateRing(idx, rhythmMode === 'stack' ? r.buckets[idx] : val, maxBucket, null, 'Scrubbing');
+    if (rhythmMode === 'stack') { $('rhythmRingNum').textContent = String(val); $('rhythmRingSub').textContent = 'total'; }
+
+    const tip = $('rhythmTooltip');
+    tip.classList.add('show');
+    tip.style.left = ((idx / 23) * 100) + '%';
+    $('rhythmTooltipNum').textContent = String(val);
+    $('rhythmTooltipTime').textContent = hourLabel(idx);
+    drawRhythmChart(r.buckets, maxBucket);
+  }
+  function rhythmPointerLeave() {
+    rhythmHoverIdx = null;
+    $('rhythmTooltip').classList.remove('show');
+    renderRhythm();
+  }
+  const rhythmCanvasEl = $('rhythmChart');
+  rhythmCanvasEl.addEventListener('mousemove', (e) => rhythmPointerMove(e.clientX));
+  rhythmCanvasEl.addEventListener('mouseleave', rhythmPointerLeave);
+  rhythmCanvasEl.addEventListener('touchmove', (e) => { if (e.touches[0]) rhythmPointerMove(e.touches[0].clientX); }, { passive: true });
+  rhythmCanvasEl.addEventListener('touchend', rhythmPointerLeave);
+
+  $('rhythmSegControl').addEventListener('click', (e) => {
+    const btn = e.target.closest('.seg-btn');
+    if (!btn) return;
+    rhythmMode = btn.dataset.mode;
+    $('rhythmSegControl').querySelectorAll('.seg-btn').forEach((b) => b.classList.toggle('active', b === btn));
+    renderRhythm();
+  });
+
+  // ============================================================
+  // TRADE LOG
+  // ============================================================
+  function renderTradeSummary() {
+    $('tradeCount').textContent = String(trades.length);
+    const net = trades.reduce((s, t) => s + (Number(t.pnl) || 0), 0);
+    const netEl = $('tradeNetPnl');
+    netEl.textContent = fmtPnl(net);
+    netEl.style.color = net > 0 ? 'var(--success)' : (net < 0 ? 'var(--danger)' : 'var(--text-primary)');
+    if (trades.length) {
+      const wins = trades.filter((t) => Number(t.pnl) > 0).length;
+      $('tradeWinRate').textContent = Math.round((wins / trades.length) * 100) + '%';
+    } else {
+      $('tradeWinRate').textContent = '—';
+    }
+  }
+  function renderTradeList() {
+    const box = $('tradeList');
+    if (!trades.length) {
+      box.innerHTML = '<div class="empty-state">No trades logged yet — add your first one below.</div>';
+      return;
+    }
+    const sorted = trades.slice().sort((a, b) => new Date(b.ts) - new Date(a.ts));
+    box.innerHTML = '';
+    sorted.forEach((t) => {
+      const row = document.createElement('div');
+      row.className = 'trade-row';
+      const pnl = Number(t.pnl) || 0;
+      const d = new Date(t.ts);
+      const timeStr = isNaN(d.getTime()) ? '' : d.toLocaleString('en-US', { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });
+      row.innerHTML =
+        '<div class="trade-info"><div class="trade-sym">' + (t.symbol || 'Unknown') + '</div>' +
+          '<div class="trade-time">' + timeStr + '</div>' +
+          (t.note ? '<div class="trade-note">' + t.note + '</div>' : '') + '</div>' +
+        '<div class="trade-pnl ' + (pnl >= 0 ? 'up' : 'down') + '">' + fmtPnl(pnl) + '</div>' +
+        '<button class="trade-delete" type="button">×</button>';
+      row.querySelector('.trade-delete').addEventListener('click', () => {
+        trades = trades.filter((x) => x.id !== t.id);
+        saveTrades(trades);
+        renderTrades();
+      });
+      box.appendChild(row);
+    });
+  }
+  function renderTrades() {
+    renderTradeSummary();
+    renderTradeList();
+    renderRhythm();
+  }
+  function addTrade() {
+    const symbol = $('tradePosInput').value.trim();
+    const pnlRaw = $('tradePnlInput').value.trim();
+    const timeRaw = $('tradeTimeInput').value;
+    const note = $('tradeNoteInput').value.trim();
+    if (!symbol || pnlRaw === '') { alert('Enter a position and a P&L amount.'); return; }
+    const ts = timeRaw ? new Date(timeRaw).toISOString() : new Date().toISOString();
+    trades.push({ id: uid(), symbol, pnl: Number(pnlRaw), ts, note });
+    saveTrades(trades);
+    $('tradePosInput').value = ''; $('tradePnlInput').value = ''; $('tradeTimeInput').value = ''; $('tradeNoteInput').value = '';
+    renderTrades();
+  }
+  $('tradeAddBtn').addEventListener('click', addTrade);
+  [$('tradePosInput'), $('tradePnlInput'), $('tradeNoteInput')].forEach((el) => {
+    el.addEventListener('keydown', (e) => { if (e.key === 'Enter') addTrade(); });
+  });
 
   // ============================================================
   // PORTFOLIO AGGREGATION + RISK
@@ -1140,6 +1585,7 @@ select.gm-input { flex: 0 0 auto; min-width: 110px; -webkit-appearance: none; ap
 
   window.addEventListener('resize', () => {
     renderPortfolioCard();
+    renderRhythm();
   });
 
   // ============================================================
@@ -1151,6 +1597,7 @@ select.gm-input { flex: 0 0 auto; min-width: 110px; -webkit-appearance: none; ap
     refreshWalletHoldings();
     renderMarketPulse();
     renderBuzz();
+    renderTrades();
 
     setInterval(refreshWalletHoldings, 3 * 60 * 1000);
     setInterval(renderMarketPulse, 3 * 60 * 1000);
@@ -1170,15 +1617,17 @@ select.gm-input { flex: 0 0 auto; min-width: 110px; -webkit-appearance: none; ap
   if (window.initCloudSync) {
     window.initCloudSync({
       appKey: 'crypto',
-      syncedKeys: ['crypto:wallets', 'crypto:portfolio_history', 'crypto:settings'],
+      syncedKeys: ['crypto:wallets', 'crypto:portfolio_history', 'crypto:settings', 'crypto:trades'],
       onApplied: function () {
         wallets = loadWallets();
         history = loadHistory();
         settings = loadSettings();
+        trades = loadTrades();
         $('rpcUrlInput').value = settings.rpcUrl || '';
         renderWalletList();
         renderPortfolioCard();
         refreshWalletHoldings();
+        renderTrades();
       }
     });
   }
