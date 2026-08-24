@@ -160,6 +160,9 @@ body.topbar-modal-open { overflow: hidden; touch-action: none; }
   <a href="finance.html" class="topbar-finance-btn" id="topbarFinance" aria-label="Finance">
     <span class="topbar-finance-icon">📊</span>
   </a>
+  <a href="crypto.html" class="topbar-finance-btn" id="topbarCrypto" aria-label="Crypto Tracker">
+    <span class="topbar-finance-icon">🪙</span>
+  </a>
 </header>`;
 
   const bottombarHtml = `
