@@ -545,6 +545,13 @@ export type Database = {
         Returns: undefined;
       };
       verify_ledger: { Args: { p_user: string }; Returns: boolean };
+      post_stats: {
+        Args: { p_ids: string[] };
+        Returns: {
+          post_id: string; likes: number; comments: number; reposts: number;
+          liked: boolean; bookmarked: boolean; reposted: boolean;
+        }[];
+      };
     };
     Enums: Record<string, never>;
     CompositeTypes: Record<string, never>;

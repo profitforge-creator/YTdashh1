@@ -385,3 +385,21 @@ grant execute on function public.mark_conversation_read(uuid) to authenticated;
 -- Realtime for live chat and notification badges.
 alter publication supabase_realtime add table public.messages;
 alter publication supabase_realtime add table public.notifications;
+
+-- ---------------------------------------------------------------------------
+-- Feed stats in one round trip (security invoker, so RLS still applies)
+-- ---------------------------------------------------------------------------
+
+create or replace function public.post_stats(p_ids uuid[])
+returns table (post_id uuid, likes bigint, comments bigint, reposts bigint, liked boolean, bookmarked boolean, reposted boolean)
+language sql stable security invoker set search_path = public as $$
+  select p.id,
+    (select count(*) from public.reactions r where r.post_id = p.id),
+    (select count(*) from public.comments c where c.post_id = p.id and c.deleted_at is null),
+    (select count(*) from public.posts rp where rp.repost_of = p.id and rp.deleted_at is null),
+    exists (select 1 from public.reactions r where r.post_id = p.id and r.user_id = auth.uid()),
+    exists (select 1 from public.bookmarks b where b.post_id = p.id and b.user_id = auth.uid()),
+    exists (select 1 from public.posts rp where rp.repost_of = p.id and rp.author_id = auth.uid() and rp.deleted_at is null)
+  from public.posts p where p.id = any (p_ids);
+$$;
+grant execute on function public.post_stats(uuid[]) to authenticated;
