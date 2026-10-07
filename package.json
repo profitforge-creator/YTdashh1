@@ -10,7 +10,8 @@
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
-    "seed": "tsx scripts/seed.ts"
+    "seed": "tsx scripts/seed.ts",
+    "db:test": "bash scripts/db-test.sh"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.7",

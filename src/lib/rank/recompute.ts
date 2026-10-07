@@ -15,6 +15,7 @@ export async function recomputeRank(userId: string): Promise<void> {
   ]);
   if (!profile) return;
 
+  const { data: previous } = await admin.from("rank_snapshots").select("tier").eq("user_id", userId).maybeSingle();
   const result = computeRank((events ?? []).map((e) => ({ component: e.component, points: Number(e.points), created_at: e.created_at })));
   await admin.from("rank_snapshots").upsert({
     user_id: userId,
@@ -27,6 +28,22 @@ export async function recomputeRank(userId: string): Promise<void> {
 
   const reached = TIER_ORDER.slice(0, TIER_ORDER.indexOf(result.tier) + 1);
   for (const tier of reached) await grantTierPerks(userId, tier);
+
+  if (previous && TIER_ORDER.indexOf(result.tier) > TIER_ORDER.indexOf(previous.tier as RankTier)) {
+    const label = TIERS.find((t) => t.tier === result.tier)?.label ?? result.tier;
+    await admin.rpc("notify", {
+      p_user: userId, p_kind: "rank", p_title: `You reached ${label}`, p_body: "New perks are waiting on your profile.",
+      p_href: "/profile", p_immediate: false, p_group: null,
+    });
+  }
+}
+
+const SNAPSHOT_TTL_MS = 5 * 60_000;
+
+/** Page-view helper: recompute only when the snapshot is missing or older than five minutes. */
+export async function recomputeRankIfStale(userId: string): Promise<void> {
+  const { data } = await createAdminClient().from("rank_snapshots").select("computed_at").eq("user_id", userId).maybeSingle();
+  if (!data || Date.now() - Date.parse(data.computed_at) > SNAPSHOT_TTL_MS) await recomputeRank(userId);
 }
 
 async function grantTierPerks(userId: string, tier: RankTier): Promise<void> {

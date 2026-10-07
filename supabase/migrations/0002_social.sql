@@ -264,12 +264,35 @@ create policy notifications_update_own on public.notifications for update to aut
 revoke update on public.notifications from authenticated;
 grant update (read_at) on public.notifications to authenticated;
 
+-- Maps an event kind to the preference category shown in Settings. Unmapped kinds (comments, follows) always notify.
+create or replace function public.notification_category(p_kind text) returns text
+language sql immutable as $$
+  select case
+    when p_kind in ('job_application', 'job_selected', 'work_submitted', 'revision_requested', 'review') then 'jobs'
+    when p_kind in ('message', 'message_request') then 'messages'
+    when p_kind like 'payment_%' or p_kind like 'dispute_%' or p_kind = 'admin_dispute' then 'payments'
+    when p_kind = 'build_complete' then 'builds'
+    when p_kind = 'analytics' then 'analytics'
+    when p_kind = 'rank' then 'rank'
+    when p_kind = 'task' then 'tasks'
+    else null end;
+$$;
+
+-- In-app preferences are enforced at creation so unread counts stay consistent.
+-- Immediate events (payments, security) ignore preferences.
 create or replace function public.notify(
   p_user uuid, p_kind text, p_title text, p_body text default '', p_href text default null,
   p_immediate boolean default false, p_group text default null
 ) returns void
 language plpgsql security definer set search_path = public as $$
+declare
+  cat text := public.notification_category(p_kind);
+  wanted text;
 begin
+  if cat is not null and not p_immediate then
+    select notification_prefs -> cat ->> 'in_app' into wanted from public.user_preferences where user_id = p_user;
+    if wanted = 'false' then return; end if;
+  end if;
   insert into public.notifications (user_id, kind, title, body, href, immediate, group_key)
     values (p_user, p_kind, p_title, p_body, p_href, p_immediate, p_group);
 end;

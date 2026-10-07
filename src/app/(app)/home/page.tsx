@@ -11,7 +11,7 @@ import { NextTaskCard } from "@/features/home/next-task-card";
 import { RankCard } from "@/features/home/rank-card";
 import { requireViewer } from "@/lib/auth";
 import { JOB_CATEGORIES } from "@/lib/constants";
-import { recomputeRank } from "@/lib/rank/recompute";
+import { recomputeRankIfStale } from "@/lib/rank/recompute";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { formatCents, timeAgo } from "@/lib/utils";
@@ -48,7 +48,7 @@ export default async function HomePage() {
   ]);
 
   // Rank is derived from recorded events; recompute on visit so the card is never stale.
-  await recomputeRank(viewer.id);
+  await recomputeRankIfStale(viewer.id);
   const admin = createAdminClient();
   const [{ data: snap }, { data: allSnaps }] = await Promise.all([
     admin.from("rank_snapshots").select("score").eq("user_id", viewer.id).single(),

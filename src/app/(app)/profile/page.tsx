@@ -8,7 +8,7 @@ import { ProfileHeader } from "@/features/profile/profile-header";
 import { loadProfileMeta } from "@/features/profile/profile-data";
 import { SignOutButton } from "@/features/profile/sign-out-button";
 import { requireViewer } from "@/lib/auth";
-import { recomputeRank } from "@/lib/rank/recompute";
+import { recomputeRankIfStale } from "@/lib/rank/recompute";
 import { createClient } from "@/lib/supabase/server";
 
 export const metadata = { title: "Profile" };
@@ -23,7 +23,7 @@ const COMPONENT_LABELS: Record<string, string> = {
 
 export default async function OwnProfilePage() {
   const viewer = await requireViewer();
-  await recomputeRank(viewer.id);
+  await recomputeRankIfStale(viewer.id);
   const supabase = await createClient();
   const [meta, { data: posts }] = await Promise.all([
     loadProfileMeta(supabase, viewer.id),
@@ -40,6 +40,12 @@ export default async function OwnProfilePage() {
           <Link href="/work/balance" className="rounded-xl border px-3 py-2 text-sm hover:bg-surface-2">DevMint balance</Link>
           <Link href="/settings" className="rounded-xl border px-3 py-2 text-sm hover:bg-surface-2">Settings</Link>
           <Link href="/leaderboard" className="rounded-xl border px-3 py-2 text-sm hover:bg-surface-2">Leaderboard</Link>
+          {viewer.profile.is_admin ? (
+            <>
+              <Link href="/admin/disputes" className="rounded-xl border px-3 py-2 text-sm hover:bg-surface-2">Dispute queue</Link>
+              <Link href="/admin/reports" className="rounded-xl border px-3 py-2 text-sm hover:bg-surface-2">Moderation queue</Link>
+            </>
+          ) : null}
           <SignOutButton />
         </div>
       </ProfileHeader>
