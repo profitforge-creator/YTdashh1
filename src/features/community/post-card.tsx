@@ -50,7 +50,7 @@ function ActionButton({
   );
 }
 
-export function PostCard({ item, viewerId, detail = false }: { item: FeedPost; viewerId: string; detail?: boolean }) {
+export function PostCard({ item, viewerId }: { item: FeedPost; viewerId: string; detail?: boolean }) {
   const { post, author } = item;
   const shown = post.kind === "repost" && item.original ? item.original : item;
   const [stats, setStats] = useState(shown.stats);

@@ -5,6 +5,9 @@ import { ServiceWorker } from "@/components/layout/service-worker";
 import { requireViewer } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
 
+// Everything in the app shell is per-user; never prerender it.
+export const dynamic = "force-dynamic";
+
 export default async function AppLayout({ children }: { children: React.ReactNode }) {
   const viewer = await requireViewer();
   const supabase = await createClient();

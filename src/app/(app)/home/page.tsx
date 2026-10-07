@@ -129,7 +129,7 @@ export default async function HomePage() {
       <Card>
         <CardHeader title="Notifications" action={<Link href="/notifications" className="text-xs text-brand-hover hover:underline">See all</Link>} />
         {(notifications ?? []).length === 0 ? (
-          <p className="text-sm text-muted">You're all caught up.</p>
+          <p className="text-sm text-muted">You&apos;re all caught up.</p>
         ) : (
           <ul className="space-y-2">
             {(notifications ?? []).map((n) => (
