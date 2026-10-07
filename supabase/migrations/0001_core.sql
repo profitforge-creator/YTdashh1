@@ -2,7 +2,7 @@
 -- Every table has RLS enabled. Writes that move money, credits, or approvals go through
 -- SECURITY DEFINER functions or the service role, never direct client writes.
 
-create extension if not exists pgcrypto;
+create extension if not exists pgcrypto with schema extensions;
 
 create type app_role as enum ('developer', 'specialist', 'tester', 'player');
 create type ai_provider as enum ('claude', 'chatgpt', 'gemini');

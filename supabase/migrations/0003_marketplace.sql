@@ -268,7 +268,7 @@ create or replace function public.ledger_hash(
   p_from text, p_to text, p_amount bigint, p_at timestamptz
 ) returns text
 language sql immutable as $$
-  select encode(digest(
+  select encode(extensions.digest(
     concat_ws('|', p_prev, p_id::text, p_user::text, coalesce(p_contract::text, ''), p_kind,
               coalesce(p_from, ''), coalesce(p_to, ''), p_amount::text, extract(epoch from p_at)::text),
     'sha256'), 'hex');
