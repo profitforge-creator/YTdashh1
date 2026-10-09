@@ -9,7 +9,7 @@ Stack: Next.js 15 (App Router) · TypeScript · Tailwind v4 · Supabase (Auth, P
 ## Setup
 
 1. `npm install`
-2. Create a Supabase project. In **SQL editor** (or `supabase db push`) apply, in order, `supabase/migrations/0001…0004`.
+2. Create a Supabase project. In **SQL editor** (or `supabase db push`) apply, in order, `supabase/migrations/0001…0005` (0005 is advisor-driven hardening: function privileges, FK indexes, RLS initplan).
 3. Auth → Providers: enable Email (disable "confirm email" for local dev) and Google (optional).
    Auth → URL configuration: add `http://localhost:3000/auth/callback` and your production `/auth/callback`.
 4. Realtime: the migrations add `messages` and `notifications` to the `supabase_realtime` publication.
